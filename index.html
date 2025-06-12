@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Feliz Dia dos Namorados!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to top right, #ffdde1, #ee9ca7);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      color: white;
+    }
+
+    .main-content {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .container {
+      width: 100%;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #fff;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px #ff5e78;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      font-size: 1.1em;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      user-select: none;
+    }
+
+    .yes-btn {
+      background-color: #ff5e78;
+      color: white;
+      z-index: 1;
+    }
+
+    .no-btn {
+      background-color: #ffffff;
+      color: #ff5e78;
+      border: 2px solid #ff5e78;
+      z-index: 1;
+      position: relative;
+    }
+
+    .letter {
+      font-size: 1.2em;
+      max-width: 600px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      text-shadow: 1px 1px #00000030;
+      margin-top: 40px;
+    }
+
+    .heart-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 8s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        bottom: -20px;
+        opacity: 1;
+      }
+      100% {
+        bottom: 100%;
+        opacity: 0;
+      }
+    }
+
+    .audio-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+      user-select: none;
+      cursor: pointer;
+      position: relative;
+      width: 250px;
+      height: 60px;
+      background: #ff5e78;
+      border-radius: 30px;
+      box-shadow: 0 0 20px rgba(255, 94, 120, 0.7);
+      transition: background-color 0.3s ease;
+    }
+
+    .audio-container:hover {
+      background-color: #ff425d;
+    }
+
+    .audio-label {
+      font-size: 1.8em;
+      color: #fff;
+      text-shadow: 2px 2px #b43a45;
+      font-weight: bold;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      line-height: 60px;
+      user-select: none;
+      pointer-events: none;
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+      top: 0;
+      left: 0;
+    }
+
+    audio {
+      width: 100%;
+      height: 60px;
+      border-radius: 30px;
+      opacity: 0; /* Oculta o player */
+      pointer-events: none; /* evita clique direto */
+      position: relative;
+      z-index: 1;
+    }
+
+    #timer {
+      font-size: 1.4em;
+      color: #fff;
+      text-shadow: 2px 2px #ff5e78;
+      margin-top: 20px;
+      font-weight: bold;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      p {
+        font-size: 1em;
+      }
+
+      #timer {
+        font-size: 1.2em;
+      }
+
+      .audio-container {
+        width: 180px;
+        height: 45px;
+      }
+
+      .audio-label {
+        font-size: 1.3em;
+        line-height: 45px;
+      }
+
+      audio {
+        height: 45px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="audio-container" id="audioContainer" title="Clique para ativar a música">
+    <div class="audio-label">EU TE AMO</div>
+    <audio id="audio" autoplay loop muted>
+      <source src="galcosta-palavras.mp3" type="audio/mpeg" />
+      Seu navegador não suporta áudio.
+    </audio>
+  </div>
+
+  <!-- Conteúdo principal centralizado -->
+  <div class="main-content">
+    <!-- Tela principal -->
+    <div class="container" id="main">
+      <img src="foto-casal.png" alt="Nós dois 💖" />
+      <h1>Feliz Dia dos Namorados ❤️</h1>
+      <p>Você aceita passar muitos outros dias comigo?</p>
+
+      <div class="buttons">
+        <button class="btn yes-btn" onclick="mostrarCarta()">Sim!</button>
+        <button class="btn no-btn" id="noBtn">Não...</button>
+      </div>
+    </div>
+
+    <!-- Tela "Não" -->
+    <div class="container hidden" id="naoTela">
+      <h1>Você não tem escolha... ❤️</h1>
+      <p>
+        Vai passar o resto da sua vida comigo, quer queira ou não! 😘
+      </p>
+      <button class="btn yes-btn" onclick="mostrarCarta()">Por favor, aceite 💖</button>
+    </div>
+
+    <!-- Tela da cartinha -->
+    <div class="container hidden" id="carta">
+      <h1>💌 Minha cartinha pra você</h1>
+      <p class="letter">
+        Meu amor, <br /><br />
+        Obrigado por ser a luz dos meus dias. Cada momento contigo é único e me faz querer viver um milhão de vidas ao seu lado.
+        <br /><br />
+        Você é linda, divertida, carinhosa e absolutamente maravilhosa.
+        <br /><br />
+        Nunca se esqueça: te amo mais do que palavras podem dizer! ❤️
+      </p>
+    </div>
+  </div>
+
+  <div id="timer" aria-live="polite" aria-atomic="true">
+    Calculando tempo juntos...
+  </div>
+
+  <div class="heart-bg" id="hearts"></div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const audio = document.getElementById('audio');
+    const audioContainer = document.getElementById('audioContainer');
+
+    function mostrarCarta() {
+      document.getElementById('main').classList.add('hidden');
+      document.getElementById('naoTela').classList.add('hidden');
+      document.getElementById('carta').classList.remove('hidden');
+      playWithSound();
+    }
+
+    noBtn.addEventListener('click', () => {
+      document.getElementById('main').classList.add('hidden');
+      document.getElementById('naoTela').classList.remove('hidden');
+    });
+
+    // Ativa som ao clicar no container do botão "EU TE AMO"
+    audioContainer.addEventListener('click', () => {
+      if (audio.muted) {
+        audio.muted = false;
+        audio.play().catch(() => {});
+      }
+    });
+
+    // Corações flutuantes
+    const heartsContainer = document.getElementById('hearts');
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+      heartsContainer.appendChild(heart);
+      setTimeout(() => {
+        heart.remove();
+      }, 8000);
+    }, 300);
+
+    // Timer relacionamento desde 11/10/2023
+    const startDate = new Date(2023, 9, 11, 0, 0, 0);
+
+    const timer = document.getElementById('timer');
+    function updateTimer() {
+      const now = new Date();
+      let diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      diff -= days * (1000 * 60 * 60 * 24);
+
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      diff -= hours * (1000 * 60 * 60);
+
+      const minutes = Math.floor(diff / (1000 * 60));
+      diff -= minutes * (1000 * 60);
+
+      const seconds = Math.floor(diff / 1000);
+
+      timer.textContent = `Estamos juntos há ${days} dias, ${hours}h ${minutes}m ${seconds}s 💖`;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // Função para ativar som e lidar com autoplay bloqueado
+    function playWithSound() {
+      if (audio.muted) {
+        audio.muted = false;
+      }
+      audio.play().catch(() => {
+        // Autoplay bloqueado, só ativa som ao clique
+      });
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+ 

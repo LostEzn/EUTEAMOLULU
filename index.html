@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Feliz Dia dos Namorados!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
       margin: 0;
@@ -14,13 +15,16 @@
       height: 100%;
       font-family: 'Comic Sans MS', cursive, sans-serif;
       background: linear-gradient(to top right, #ffdde1, #ee9ca7);
-      overflow: hidden;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: space-between; /* espaço entre conteúdo e footer */
       align-items: center;
-      padding: 20px;
+      padding: 15px 10px;
       color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-align: center;
     }
 
     .main-content {
@@ -29,13 +33,15 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      max-width: 600px;
+      max-width: 100%;
       width: 100%;
+      padding: 0 10px;
     }
 
     .container {
       width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
     }
 
     .hidden {
@@ -43,8 +49,8 @@
     }
 
     img {
-      width: 200px;
-      height: 200px;
+      width: 150px;
+      height: 150px;
       object-fit: cover;
       border-radius: 50%;
       border: 4px solid #fff;
@@ -53,39 +59,48 @@
     }
 
     h1 {
-      font-size: 2.5em;
+      font-size: 2em;
       color: #fff;
       margin-bottom: 10px;
       text-shadow: 2px 2px #ff5e78;
+      line-height: 1.2;
     }
 
     p {
-      font-size: 1.2em;
+      font-size: 1.1em;
       margin-bottom: 20px;
+      line-height: 1.4;
     }
 
     .buttons {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 15px;
       flex-wrap: wrap;
       position: relative;
     }
 
     .btn {
-      padding: 12px 25px;
+      padding: 14px 30px;
       border: none;
-      font-size: 1.1em;
+      font-size: 1.2em;
       border-radius: 25px;
       cursor: pointer;
       transition: 0.3s ease;
       user-select: none;
+      min-width: 110px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
     .yes-btn {
       background-color: #ff5e78;
       color: white;
       z-index: 1;
+      box-shadow: 0 5px 15px #ff5e78aa;
+    }
+
+    .yes-btn:hover {
+      background-color: #e65568;
     }
 
     .no-btn {
@@ -94,11 +109,17 @@
       border: 2px solid #ff5e78;
       z-index: 1;
       position: relative;
+      box-shadow: 0 5px 15px #ff5e78aa;
+    }
+
+    .no-btn:hover {
+      background-color: #ff5e7888;
+      color: #fff;
     }
 
     .letter {
       font-size: 1.2em;
-      max-width: 600px;
+      max-width: 100%;
       color: #fff;
       background: rgba(255, 255, 255, 0.1);
       padding: 20px;
@@ -106,6 +127,7 @@
       backdrop-filter: blur(8px);
       text-shadow: 1px 1px #00000030;
       margin-top: 40px;
+      word-break: break-word;
     }
 
     .heart-bg {
@@ -164,49 +186,31 @@
       align-items: center;
       margin-bottom: 20px;
       user-select: none;
-      cursor: pointer;
-      position: relative;
-      width: 250px;
-      height: 60px;
-      background: #ff5e78;
-      border-radius: 30px;
-      box-shadow: 0 0 20px rgba(255, 94, 120, 0.7);
-      transition: background-color 0.3s ease;
-    }
-
-    .audio-container:hover {
-      background-color: #ff425d;
+      max-width: 100%;
     }
 
     .audio-label {
-      font-size: 1.8em;
+      font-size: 1.6em;
       color: #fff;
-      text-shadow: 2px 2px #b43a45;
+      text-shadow: 2px 2px #ff5e78;
+      margin-bottom: 8px;
       font-weight: bold;
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      line-height: 60px;
-      user-select: none;
-      pointer-events: none;
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      z-index: 2;
-      top: 0;
-      left: 0;
     }
 
     audio {
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 94, 120, 0.7);
+      outline: none;
       width: 100%;
-      height: 60px;
-      border-radius: 30px;
-      opacity: 0; /* Oculta o player */
-      pointer-events: none; /* evita clique direto */
-      position: relative;
-      z-index: 1;
+      max-width: 320px;
+      height: 40px;
+      cursor: pointer;
+      background: #fff0f2;
     }
 
     #timer {
-      font-size: 1.4em;
+      font-size: 1.3em;
       color: #fff;
       text-shadow: 2px 2px #ff5e78;
       margin-top: 20px;
@@ -215,39 +219,48 @@
       text-align: center;
       flex-shrink: 0;
       user-select: none;
+      max-width: 100%;
+      padding: 0 10px;
+      word-break: break-word;
     }
 
     @media (max-width: 480px) {
+      img {
+        width: 130px;
+        height: 130px;
+      }
+
       h1 {
-        font-size: 2em;
+        font-size: 1.6em;
       }
 
       p {
         font-size: 1em;
       }
 
-      #timer {
-        font-size: 1.2em;
+      .btn {
+        font-size: 1.1em;
+        min-width: 90px;
+        padding: 12px 20px;
       }
 
-      .audio-container {
-        width: 180px;
-        height: 45px;
+      #timer {
+        font-size: 1.1em;
       }
 
       .audio-label {
         font-size: 1.3em;
-        line-height: 45px;
       }
 
       audio {
-        height: 45px;
+        max-width: 280px;
+        height: 36px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="audio-container" id="audioContainer" title="Clique para ativar a música">
+  <div class="audio-container">
     <div class="audio-label">EU TE AMO</div>
     <audio id="audio" autoplay loop muted>
       <source src="galcosta-palavras.mp3" type="audio/mpeg" />
@@ -255,9 +268,7 @@
     </audio>
   </div>
 
-  <!-- Conteúdo principal centralizado -->
   <div class="main-content">
-    <!-- Tela principal -->
     <div class="container" id="main">
       <img src="foto-casal.png" alt="Nós dois 💖" />
       <h1>Feliz Dia dos Namorados ❤️</h1>
@@ -269,16 +280,12 @@
       </div>
     </div>
 
-    <!-- Tela "Não" -->
     <div class="container hidden" id="naoTela">
       <h1>Você não tem escolha... ❤️</h1>
-      <p>
-        Vai passar o resto da sua vida comigo, quer queira ou não! 😘
-      </p>
+      <p>Vai passar o resto da sua vida comigo, quer queira ou não! 😘</p>
       <button class="btn yes-btn" onclick="mostrarCarta()">Por favor, aceite 💖</button>
     </div>
 
-    <!-- Tela da cartinha -->
     <div class="container hidden" id="carta">
       <h1>💌 Minha cartinha pra você</h1>
       <p class="letter">
@@ -301,26 +308,19 @@
   <script>
     const noBtn = document.getElementById('noBtn');
     const audio = document.getElementById('audio');
-    const audioContainer = document.getElementById('audioContainer');
 
     function mostrarCarta() {
       document.getElementById('main').classList.add('hidden');
       document.getElementById('naoTela').classList.add('hidden');
       document.getElementById('carta').classList.remove('hidden');
-      playWithSound();
+      audio.play().catch(() => {
+        // se autoplay bloqueado, ignora
+      });
     }
 
     noBtn.addEventListener('click', () => {
       document.getElementById('main').classList.add('hidden');
       document.getElementById('naoTela').classList.remove('hidden');
-    });
-
-    // Ativa som ao clicar no container do botão "EU TE AMO"
-    audioContainer.addEventListener('click', () => {
-      if (audio.muted) {
-        audio.muted = false;
-        audio.play().catch(() => {});
-      }
     });
 
     // Corações flutuantes
@@ -360,19 +360,10 @@
 
     setInterval(updateTimer, 1000);
     updateTimer();
-
-    // Função para ativar som e lidar com autoplay bloqueado
-    function playWithSound() {
-      if (audio.muted) {
-        audio.muted = false;
-      }
-      audio.play().catch(() => {
-        // Autoplay bloqueado, só ativa som ao clique
-      });
-    }
   </script>
 </body>
 </html>
+
 
 
 

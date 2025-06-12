@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -11,14 +11,16 @@
       box-sizing: border-box;
     }
 
+    /* Ajustes para evitar esticar no celular */
     body, html {
-      height: 100%;
+      height: auto; /* antes era 100% */
+      min-height: 100vh; /* garante altura mínima da tela */
       font-family: 'Comic Sans MS', cursive, sans-serif;
       background: linear-gradient(to top right, #ffdde1, #ee9ca7);
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      justify-content: space-between; /* espaço entre conteúdo e footer */
+      justify-content: space-between;
       align-items: center;
       padding: 15px 10px;
       color: white;
@@ -224,7 +226,16 @@
       word-break: break-word;
     }
 
+    /* Ajustes adicionais para celular */
     @media (max-width: 480px) {
+      body, html {
+        padding: 10px 5px;
+      }
+
+      .main-content {
+        padding: 0 10px;
+      }
+
       img {
         width: 130px;
         height: 130px;
@@ -363,6 +374,7 @@
   </script>
 </body>
 </html>
+
 
 
 
